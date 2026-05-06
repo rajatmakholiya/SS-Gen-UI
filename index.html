@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSN Article Generator</title>
+    <style>
+        :root {
+            --bg-color: #f5f5f7;
+            --card-bg: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-blue: #0071e3;
+            --border-color: #d2d2d7;
+            --error-color: #ff3b30;
+            --success-color: #34c759;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 18px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        p.subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-color);
+            font-size: 15px;
+            color: var(--text-primary);
+            transition: border-color 0.25s ease, background-color 0.25s ease;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent-blue);
+            background-color: #ffffff;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        #statusMessage {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 500;
+            min-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="form-container">
+        <h1>MSN Article Generator</h1>
+        <p class="subtitle">Enter parameters for automated workflow generation</p>
+
+        <form id="workflowForm">
+            <div class="form-group">
+                <label for="writerName">Writer Name</label>
+                <input type="text" id="writerName" name="Writer Name" placeholder="e.g. John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="title">Slideshow Title</label>
+                <input type="text" id="title" name="Slideshow Title"
+                    placeholder="e.g. 25 NFL Quarterbacks Who Dominated" required>
+            </div>
+
+            <div class="form-group">
+                <label for="category">Topic Category</label>
+                <select id="category" name="Topic Category" required>
+                    <option value="" disabled selected>Select category</option>
+                    <option value="Sports - NFL">Sports - NFL</option>
+                    <option value="Sports - NBA">Sports - NBA</option>
+                    <option value="Sports - Golf">Sports - Golf</option>
+                    <option value="Sports - Tennis">Sports - Tennis</option>
+                    <option value="Sports - UFC">Sports - UFC</option>
+                    <option value="Sports - NASCAR">Sports - NASCAR</option>
+                    <option value="Movies & TV">Movies & TV</option>
+                    <option value="Music">Music</option>
+                    <option value="Pop Culture">Pop Culture</option>
+                    <option value="Lifestyle">Lifestyle</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="slideCount">Number of Slides (excluding intro)</label>
+                <input type="number" id="slideCount" name="Number of Slides" value="20" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="slidesPerEntity">Slides Per Entity</label>
+                <select id="slidesPerEntity" name="Slides Per Entity">
+                    <option value="1 (Standard)">1 (Standard)</option>
+                    <option value="2 (Deep Dive - 2 slides per item)">2 (Deep Dive - 2 slides per item)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sources">Primary Source URLs (One per line)</label>
+                <textarea id="sources" name="Primary Source URLs"
+                    placeholder="https://www.espn.com/nfl/story&#10;https://www.nfl.com/news"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="mustInclude">Must-Include Items (One per line)</label>
+                <textarea id="mustInclude" name="Must-Include Items"
+                    placeholder="Item A&#10;Item B&#10;Item C"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="userContext">User Context</label>
+                <textarea id="userContext" name="User Context"
+                    placeholder="Paste any additional notes or instructions here..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="writingStyle">Writing Style Influence</label>
+                <input type="text" id="writingStyle" name="Writing Style Influence"
+                    placeholder="e.g. casual and punchy">
+            </div>
+
+            <button type="submit" id="submitBtn">Start Automation</button>
+        </form>
+
+        <div id="statusMessage"></div>
+    </div>
+
+    <script>
+        const N8N_WEBHOOK_URL = "INSERT_YOUR_PRODUCTION_WEBHOOK_URL_HERE";
+
+        document.getElementById('workflowForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('submitBtn');
+            const statusMsg = document.getElementById('statusMessage');
+
+            statusMsg.textContent = "Submitting...";
+            statusMsg.style.color = "var(--text-secondary)";
+            btn.disabled = true;
+
+            const formData = {
+                "Writer Name": document.getElementById('writerName').value,
+                "Slideshow Title": document.getElementById('title').value,
+                "Topic Category": document.getElementById('category').value,
+                "Number of Slides (excluding intro)": parseInt(document.getElementById('slideCount').value, 10),
+                "Slides Per Entity": document.getElementById('slidesPerEntity').value,
+                "Primary Source URLs (optional)": document.getElementById('sources').value,
+                "Must-Include Items (optional)": document.getElementById('mustInclude').value,
+                "User Context (optional)": document.getElementById('userContext').value,
+                "Writing Style Influence (optional)": document.getElementById('writingStyle').value
+            };
+
+            try {
+                const response = await fetch(N8N_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    statusMsg.textContent = "Automation successfully triggered! ✅";
+                    statusMsg.style.color = "var(--success-color)";
+                    document.getElementById('workflowForm').reset();
+                } else {
+                    statusMsg.textContent = "Error triggering workflow: " + response.statusText;
+                    statusMsg.style.color = "var(--error-color)";
+                }
+            } catch (err) {
+                statusMsg.textContent = "Network error or CORS restriction. Check console.";
+                statusMsg.style.color = "var(--error-color)";
+                console.error("Error:", err);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>
