@@ -246,7 +246,8 @@
                 });
 
                 if (response.ok) {
-                    statusMsg.textContent = "Automation successfully triggered! ✅";
+                    // UPDATED MESSAGE HERE using innerHTML for formatting
+                    statusMsg.innerHTML = "Automation successfully triggered! ✅<br><br><span style='color: var(--text-primary);'>The AI is now researching, writing, and auditing your article. <strong>Please check the Tracking Google Sheet in 6-7 minutes</strong> to access your generated Google Docs.</span>";
                     statusMsg.style.color = "var(--success-color)";
                     document.getElementById('workflowForm').reset();
                 } else {
