@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     }
 
     // 2. Put your exact n8n webhook URL here (including port 5678)
-    const N8N_WEBHOOK_URL = "http://msnssarticle.duckdns.org:5678/webhook/bbb961c0-17ee-44f3-96fa-43732344d9b3";
+    const N8N_WEBHOOK_URL = "https://msnssarticle.duckdns.org/webhook/bbb961c0-17ee-44f3-96fa-43732344d9b3";
 
     try {
         // 3. Forward the request from Vercel to your Hostinger VPS
